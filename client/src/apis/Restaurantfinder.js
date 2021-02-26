@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: `${process.env.PORT}api/v1/restaurants/`,
+  baseURL: `${process.env.API_ENDPOINT}api/v1/restaurants/`,
 });
