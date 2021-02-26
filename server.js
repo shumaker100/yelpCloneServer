@@ -4,7 +4,7 @@ const cors = require("cors");
 const db = require("./server/db");
 
 const morgan = require("morgan");
-const morganSetting = process.env.NODE.ENV === "production" ? "tiny" : "dev";
+const morganSetting = process.env.NODE_ENV === "production" ? "tiny" : "dev";
 const app = express();
 
 app.use(morgan(morganSetting));
