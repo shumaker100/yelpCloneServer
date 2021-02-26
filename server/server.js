@@ -4,9 +4,10 @@ const cors = require("cors");
 const db = require("./db");
 
 const morgan = require("morgan");
-
+const morganSetting = process.env.NODE.ENV === "production" ? "tiny" : "dev";
 const app = express();
 
+app.use(morgan(morganSetting));
 app.use(cors());
 app.use(express.json());
 
@@ -32,8 +33,6 @@ app.get("/api/v1/restaurants", async (req, res) => {
 
 //Get a Restaurant
 app.get("/api/v1/restaurants/:id", async (req, res) => {
-  console.log(req.params.id);
-
   try {
     const restaurant = await db.query(
       "select * from restaurants left join (select restaurant_id, COUNT(*), TRUNC(AVG(rating),1) as average_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id where id = $1",
@@ -45,8 +44,6 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
       "select * from reviews where restaurant_id = $1",
       [req.params.id]
     );
-    console.log(reviews);
-
     res.status(200).json({
       status: "succes",
       data: {
@@ -62,14 +59,12 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
 // Create a Restaurant
 
 app.post("/api/v1/restaurants", async (req, res) => {
-  console.log(req.body);
-
   try {
     const results = await db.query(
       "INSERT INTO restaurants (name, location, price_range) values ($1, $2, $3) returning *",
       [req.body.name, req.body.location, req.body.price_range]
     );
-    console.log(results);
+
     res.status(201).json({
       status: "succes",
       data: {
@@ -99,8 +94,6 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  console.log(req.params.id);
-  console.log(req.body);
 });
 
 // Delete Restaurant
@@ -124,7 +117,7 @@ app.post("/api/v1/restaurants/:id/addReview", async (req, res) => {
       "INSERT INTO reviews (restaurant_id, name, review, rating) values ($1, $2, $3, $4) returning *;",
       [req.params.id, req.body.name, req.body.review, req.body.rating]
     );
-    console.log(newReview);
+
     res.status(201).json({
       status: "success",
       data: {
@@ -136,7 +129,7 @@ app.post("/api/v1/restaurants/:id/addReview", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`server is up and listening on port ${port}`);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`server is up and listening on port ${PORT}`);
 });
