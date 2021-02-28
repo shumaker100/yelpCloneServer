@@ -2,11 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const db = require("./db");
-
+const path = require("path");
 const morgan = require("morgan");
 const morganSetting = process.env.NODE_ENV === "production" ? "tiny" : "dev";
 const app = express();
 
+app.use(express.static(path.join(__dirname, "..", "client", "build")));
 app.use(morgan(morganSetting));
 app.use(cors());
 app.use(express.json());
