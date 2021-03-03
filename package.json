@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migrate": "postgrator --config postgrator-./server/db/index.js",
+    "migrate": "postgrator --config postgrator-config.js",
     "migrate:production": "heroku run npm run migrate",
     "deploy": "git push heroku main",
     "postdeploy": "npm run migrate:production",
@@ -17,6 +17,7 @@
     "node": "14.15.0"
   },
   "dependencies": {
+    "config": "^3.3.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
