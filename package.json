@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "migrate:production": "heroku run npm run migrate"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "postgrator-cli": "^3.2.0"
   }
 }
