@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js",
-    "migrate:production": "heroku run npm run migrate"
+    "migrate": "postgrator --config postgrator-config.js",
+    "migrate:production": "heroku run npm run migrate",
+    "start": "node server/server.js"
   },
   "keywords": [],
   "author": "",
